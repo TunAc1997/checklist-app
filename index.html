@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<link rel="manifest" href="manifest.json">
+	<meta name="theme-color" content="#3b82f6">
+	<link rel="apple-touch-icon" href="icon-192x192.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan de Révision - Examens Janvier 2025</title>
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #8b5cf6;
+            --background-color: #f8fafc;
+            --text-color: #1f2937;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .content {
+            padding: 24px;
+        }
+
+        .week {
+            margin-bottom: 32px;
+        }
+
+        .week-header {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--primary-color);
+        }
+
+        .task-group {
+            margin-bottom: 16px;
+        }
+
+        .task {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .task:hover {
+            background: #f1f5f9;
+            transform: translateX(4px);
+        }
+
+        .subtask {
+            margin-left: 32px;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary-color);
+            border-radius: 4px;
+            margin-right: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox.checked {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+        }
+
+        .task-text {
+            flex: 1;
+        }
+
+        .task.completed .task-text {
+            text-decoration: line-through;
+            color: #94a3b8;
+        }
+
+        .progress-container {
+            margin-top: 12px;
+            margin-bottom: 24px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            transition: width 0.5s ease;
+        }
+
+        .calendar {
+            margin-top: 32px;
+            padding: 24px;
+            background: linear-gradient(to bottom right, #eff6ff, #f5f3ff);
+            border-radius: 12px;
+            border: 1px solid #e0e7ff;
+        }
+
+        .calendar h2 {
+            margin-top: 0;
+            margin-bottom: 16px;
+            color: var(--primary-color);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .calendar-item {
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .calendar-date {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+        }
+
+        .expand-button {
+            padding: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+
+        .expand-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .expanded .expand-icon {
+            transform: rotate(90deg);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Plan de Révision - Examens Janvier 2025</h1>
+        </div>
+        <div class="content" id="app">
+            <!-- Le contenu sera généré par JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        const tasks = {
+            semaine1: [
+                {
+                    id: 1,
+                    text: "Exercices de Mourad (classroom)",
+                    subtasks: []
+                },
+                {
+                    id: 2,
+                    text: "Physique Collision",
+                    subtasks: [
+                        { id: '2-1', text: "Rappel du cours" },
+                        { id: '2-2', text: "TD1" },
+                        { id: '2-3', text: "TD2" },
+                        { id: '2-4', text: "TD3" },
+                        { id: '2-5', text: "DM (ex3 td3)" },
+                        { id: '2-6', text: "Examen Principal" },
+                        { id: '2-7', text: "Examen Rattrapage" }
+                    ]
+                },
+                {
+                    id: 3,
+                    text: "Interaction Rayonnement Matière",
+                    subtasks: [
+                        { id: '3-1', text: "Rappel du cours" },
+                        { id: '3-2', text: "TD1" },
+                        { id: '3-3', text: "TD2" },
+                        { id: '3-4', text: "TD3" },
+                        { id: '3-5', text: "Examen Principal" },
+                        { id: '3-6', text: "Examen Rattrapage" }
+                    ]
+                },
+                {
+                    id: 4,
+                    text: "Semi-conducteur",
+                    subtasks: [
+                        { id: '4-1', text: "Rappel du cours" },
+                        { id: '4-2', text: "Chapitre 3" },
+                        { id: '4-3', text: "Chapitre 4" },
+                        { id: '4-4', text: "TD" },
+                        { id: '4-5', text: "Examen Principal" },
+                        { id: '4-6', text: "Examen Rattrapage" }
+                    ]
+                }
+            ],
+            semaine2: [
+                {
+                    id: 5,
+                    text: "Nanostructures",
+                    subtasks: [
+                        { id: '5-1', text: "Chapitre 1" },
+                        { id: '5-2', text: "Chapitre 2" },
+                        { id: '5-3', text: "Chapitre 3" },
+                        { id: '5-4', text: "TD1" },
+                        { id: '5-5', text: "TD2" },
+                        { id: '5-6', text: "DM" },
+                        { id: '5-7', text: "Examen Principal" },
+                        { id: '5-8', text: "Examen Rattrapage" }
+                    ]
+                },
+                {
+                    id: 6,
+                    text: "Spectroscopie",
+                    subtasks: [
+                        { id: '6-1', text: "Chapitre 1" },
+                        { id: '6-2', text: "Chapitre 2" },
+                        { id: '6-3', text: "TD1" },
+                        { id: '6-4', text: "TD2" },
+                        { id: '6-5', text: "Examen Principal" },
+                        { id: '6-6', text: "Examen Rattrapage" }
+                    ]
+                },
+                {
+                    id: 7,
+                    text: "Physique Nucléaire",
+                    subtasks: [
+                        { id: '7-1', text: "Cours 2" },
+                        { id: '7-2', text: "Cours 4" },
+                        { id: '7-3', text: "Cours 6" },
+                        { id: '7-4', text: "TD1" },
+                        { id: '7-5', text: "TD2" },
+                        { id: '7-6', text: "DM" },
+                        { id: '7-7', text: "Examen Principal" },
+                        { id: '7-8', text: "Examen Rattrapage" },
+                        { id: '7-9', text: "3ème Session" }
+                    ]
+                },
+                {
+                    id: 8,
+                    text: "Physique Moléculaire",
+                    subtasks: [
+                        { id: '8-1', text: "Rappel du cours" },
+                        { id: '8-2', text: "Chapitre 6" },
+                        { id: '8-3', text: "Moment cinétique" }
+                    ]
+                },
+                {
+                    id: 9,
+                    text: "Recherche sujet de mémoire",
+                    subtasks: [
+                        { id: '9-1', text: "Recherche détaillée" },
+                        { id: '9-2', text: "Exigences techniques" },
+                        { id: '9-3', text: "Choix de la langue" }
+                    ]
+                }
+            ]
+        };
+
+        const examCalendar = [
+            { date: "7 janvier 2025", subject: "Interaction rayonnement matière" },
+            { date: "8 janvier 2025", subject: "Physique moléculaire" },
+            { date: "9 janvier 2025", subject: "Physique du noyau et particules" },
+            { date: "10 janvier 2025", subject: "Physique des nanostructures" },
+            { date: "11 janvier 2025", subject: "Physique des collisions" },
+            { date: "13 janvier 2025", subject: "Semi-Conducteurs" },
+            { date: "14 janvier 2025", subject: "Spectoscopies" }
+        ];
+
+        // Charger l'état sauvegardé
+        const loadState = () => {
+            const savedState = localStorage.getItem('revisionState');
+            return savedState ? JSON.parse(savedState) : {};
+        };
+
+        // Sauvegarder l'état
+        const saveState = (state) => {
+            localStorage.setItem('revisionState', JSON.stringify(state));
+        };
+
+        let completionState = loadState();
+
+        const calculateProgress = (weekTasks) => {
+            let total = 0;
+            let completed = 0;
+
+            weekTasks.forEach(task => {
+                if (task.subtasks.length > 0) {
+                    task.subtasks.forEach(subtask => {
+                        total++;
+                        if (completionState[subtask.id]) completed++;
+                    });
+                } else {
+                    total++;
+                    if (completionState[task.id]) completed++;
+                }
+            });
+
+            return total > 0 ? (completed / total) * 100 : 0;
+        };
+
+const toggleTask = (taskId, event) => {
+    event.stopPropagation();
+    
+    const expandedStates = {};
+    document.querySelectorAll('[data-task]').forEach(el => {
+        const taskId = el.getAttribute('data-task');
+        expandedStates[taskId] = el.classList.contains('expanded');
+    });
+    
+    completionState[taskId] = !completionState[taskId];
+    saveState(completionState);
+    
+    renderApp();
+    
+    Object.entries(expandedStates).forEach(([id, wasExpanded]) => {
+        if (wasExpanded) {
+            const el = document.querySelector(`[data-task="${id}"]`);
+            const subtasks = document.querySelector(`[data-subtasks="${id}"]`);
+            if (el && subtasks) {
+                el.classList.add('expanded');
+                subtasks.style.display = 'block';
+            }
+        }
+    });
+};
+
+const toggleMainTask = (taskId, event) => {
+    event.stopPropagation();
+    
+    const expandedStates = {};
+    document.querySelectorAll('[data-task]').forEach(el => {
+        const taskId = el.getAttribute('data-task');
+        expandedStates[taskId] = el.classList.contains('expanded');
+    });
+    
+    const task = [...tasks.semaine1, ...tasks.semaine2].find(t => t.id.toString() === taskId);
+    
+    if (task && task.subtasks.length > 0) {
+        const allChecked = task.subtasks.every(st => completionState[st.id]);
+        const newState = !allChecked;
+        
+        task.subtasks.forEach(subtask => {
+            completionState[subtask.id] = newState;
+        });
+        
+        saveState(completionState);
+        renderApp();
+        
+        Object.entries(expandedStates).forEach(([id, wasExpanded]) => {
+            if (wasExpanded) {
+                const el = document.querySelector(`[data-task="${id}"]`);
+                const subtasks = document.querySelector(`[data-subtasks="${id}"]`);
+                if (el && subtasks) {
+                    el.classList.add('expanded');
+                    subtasks.style.display = 'block';
+                }
+            }
+        });
+    }
+};
+
+        const toggleExpand = (taskId) => {
+            const element = document.querySelector(`[data-task="${taskId}"]`);
+            element.classList.toggle('expanded');
+            const subtasks = document.querySelector(`[data-subtasks="${taskId}"]`);
+            if (subtasks) {
+                subtasks.style.display = element.classList.contains('expanded') ? 'block' : 'none';
+            }
+        };
+
+        const renderApp = () => {
+            const app = document.getElementById('app');
+            let html = '';
+
+            // Render weeks
+            for (const [weekId, weekTasks] of Object.entries(tasks)) {
+                const progress = calculateProgress(weekTasks);
+                
+                html += `
+                    <div class="week">
+                        <div class="week-header">${weekId === 'semaine1' ? 'Semaine 1' : 'Semaine 2'}</div>
+                        <div class="progress-container">
+                            <div class="progress-header">
+                                <span>Progression</span>
+                                <span>${Math.round(progress)}%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${progress}%"></div>
+                            </div>
+                        </div>
+                        <div class="tasks">
+                `;
+
+                weekTasks.forEach(task => {
+                    const hasSubtasks = task.subtasks.length > 0;
+                    const isCompleted = hasSubtasks 
+                        ? task.subtasks.every(st => completionState[st.id])
+                        : completionState[task.id];
+
+                    html += `
+                        <div class="task-group">
+                            <div class="task ${isCompleted ? 'completed' : ''}" data-task="${task.id}" onclick="toggleExpand('${task.id}')">
+                                ${hasSubtasks ? `
+                                    <button class="expand-button" onclick="toggleExpand('${task.id}')">
+                                        <span class="expand-icon">▶</span>
+                                    </button>
+                                ` : '<span style="width: 24px"></span>'}
+                                <div class="checkbox ${isCompleted ? 'checked' : ''}" 
+                                     onclick="${hasSubtasks ? `toggleMainTask('${task.id}', event)` : `toggleTask('${task.id}', event)`}"></div>
+                                <span class="task-text">${task.text}</span>
+                            </div>
+                            ${hasSubtasks ? `
+                                <div class="subtasks" data-subtasks="${task.id}" style="display: none">
+                                    ${task.subtasks.map(subtask => `
+                                        <div class="task subtask ${completionState[subtask.id] ? 'completed' : ''}">
+                                            <span style="width: 24px"></span>
+                                            <div class="checkbox ${completionState[subtask.id] ? 'checked' : ''}"
+                                                 onclick="toggleTask('${subtask.id}', event)"></div>
+                                            <span class="task-text">${subtask.text}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Render calendar
+            html += `
+                <div class="calendar">
+                    <h2>Calendrier des Examens</h2>
+                    <div class="calendar-grid">
+                        ${examCalendar.map(exam => `
+                            <div class="calendar-item">
+                                <div class="calendar-date">${exam.date}</div>
+                                <div>${exam.subject}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            app.innerHTML = html;
+
+// Calculate and update total progress
+const totalProgress = (calculateProgress(tasks.semaine1) + calculateProgress(tasks.semaine2)) / 2;
+const existingHeader = document.querySelector('.header');
+const existingTotalProgress = document.querySelector('.total-progress');
+
+if (existingTotalProgress) {
+    existingTotalProgress.innerHTML = `
+        <div class="progress-container" style="margin-top: 16px;">
+            <div class="progress-header">
+                <span style="color: white;">Progression Totale</span>
+                <span style="color: white;">${Math.round(totalProgress)}%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: ${totalProgress}%"></div>
+            </div>
+        </div>
+    `;
+} else {
+    const totalProgressElement = document.createElement('div');
+    totalProgressElement.className = 'total-progress';
+    totalProgressElement.innerHTML = `
+        <div class="progress-container" style="margin-top: 16px;">
+            <div class="progress-header">
+                <span style="color: white;">Progression Totale</span>
+                <span style="color: white;">${Math.round(totalProgress)}%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: ${totalProgress}%"></div>
+            </div>
+        </div>
+    `;
+    existingHeader.appendChild(totalProgressElement);
+}
+        };
+
+        // Initial render
+        renderApp();
+
+        // Ajouter des raccourcis clavier pour la navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                // Fermer tous les sous-menus ouverts
+                document.querySelectorAll('.expanded').forEach(el => {
+                    const taskId = el.getAttribute('data-task');
+                    toggleExpand(taskId);
+                });
+            }
+        });
+			if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(registration => {
+                console.log('ServiceWorker enregistré avec succès');
+            })
+            .catch(error => {
+                console.log('Erreur d\'enregistrement du ServiceWorker:', error);
+            });
+    });
+}
+    </script>
+
+</body>
+</html>
